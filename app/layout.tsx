@@ -65,6 +65,81 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'SoftwareApplication',
+      'name': 'shipped.fyi',
+      'applicationCategory': 'BusinessApplication',
+      'operatingSystem': 'Web',
+      'description': 'Simple feedback board, roadmap, and changelog tool for product teams. Collect user feedback, prioritize features with voting, share your roadmap, and celebrate shipped features with an auto-updating changelog.',
+      'url': 'https://shipped.fyi',
+      'offers': [
+        {
+          '@type': 'Offer',
+          'name': 'Free',
+          'price': '0',
+          'priceCurrency': 'USD',
+          'description': '1 feedback board, up to 50 items, public roadmap, public changelog, unlimited voters'
+        },
+        {
+          '@type': 'Offer',
+          'name': 'Pro',
+          'price': '9',
+          'priceCurrency': 'USD',
+          'priceSpecification': {
+            '@type': 'UnitPriceSpecification',
+            'price': '9',
+            'priceCurrency': 'USD',
+            'billingDuration': 'P1M'
+          },
+          'description': 'Unlimited boards, unlimited items, embeddable widget, remove branding, priority support'
+        }
+      ],
+      'featureList': [
+        'Feedback board for collecting user ideas',
+        'User voting on feature requests',
+        'Public roadmap with status columns',
+        'Auto-updating changelog for shipped features',
+        'Email notifications when features ship',
+        'Category organization for feedback items',
+        'Embeddable widget for your website',
+        'No sign-up required for voters'
+      ],
+      'screenshot': 'https://shipped.fyi/og-image.png',
+      'aggregateRating': {
+        '@type': 'AggregateRating',
+        'ratingValue': '5',
+        'ratingCount': '1'
+      }
+    },
+    {
+      '@type': 'Organization',
+      'name': 'shipped.fyi',
+      'url': 'https://shipped.fyi',
+      'logo': 'https://shipped.fyi/icon.png',
+      'sameAs': [],
+      'contactPoint': {
+        '@type': 'ContactPoint',
+        'email': 'support@shipped.fyi',
+        'contactType': 'customer support'
+      }
+    },
+    {
+      '@type': 'WebSite',
+      'name': 'shipped.fyi',
+      'url': 'https://shipped.fyi',
+      'description': 'Simple feedback board, roadmap, and changelog for indie hackers and product teams',
+      'potentialAction': {
+        '@type': 'SearchAction',
+        'target': 'https://shipped.fyi/{search_term_string}',
+        'query-input': 'required name=search_term_string'
+      }
+    }
+  ]
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -78,6 +153,10 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" content="#ffffff" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

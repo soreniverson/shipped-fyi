@@ -13,7 +13,7 @@ export default function LandingPage() {
       </div>
 
       {/* Header */}
-      <header className="relative">
+      <header className="relative border-b border-sand-200">
         <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
           <span className="text-xl font-semibold text-sand-900">shipped.fyi</span>
           <div className="flex items-center gap-4">
@@ -219,22 +219,23 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t border-sand-200 relative">
-        <div className="max-w-4xl mx-auto px-6 py-6">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              <span className="text-sand-400 text-sm">shipped.fyi</span>
-              <Link href="/terms" className="text-xs text-sand-400 hover:text-sand-600">
-                Terms
-              </Link>
-              <Link href="/privacy" className="text-xs text-sand-400 hover:text-sand-600">
-                Privacy
-              </Link>
+        <div className="max-w-4xl mx-auto px-6 py-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <span className="text-sand-900 font-medium">shipped.fyi</span>
+              <p className="text-sand-500 text-sm mt-1">Simple feedback for indie hackers</p>
             </div>
-            <div className="flex items-center gap-4">
-              <Link href="/pricing" className="text-sm text-sand-500 hover:text-sand-700">
+            <div className="flex items-center gap-6">
+              <Link href="/pricing" className="text-sm text-sand-600 hover:text-sand-900">
                 Pricing
               </Link>
-              <Link href="/login" className="text-sm text-sand-500 hover:text-sand-700">
+              <Link href="/terms" className="text-sm text-sand-600 hover:text-sand-900">
+                Terms
+              </Link>
+              <Link href="/privacy" className="text-sm text-sand-600 hover:text-sand-900">
+                Privacy
+              </Link>
+              <Link href="/login" className="text-sm text-sand-600 hover:text-sand-900">
                 Sign in
               </Link>
             </div>
