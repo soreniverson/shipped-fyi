@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
+import { CheckoutButton } from '@/components/CheckoutButton'
 import { PLANS } from '@/lib/stripe'
 
 export default function PricingPage() {
@@ -88,9 +89,7 @@ export default function PricingPage() {
                 </li>
               ))}
             </ul>
-            <Link href="/login?upgrade=pro">
-              <Button className="w-full">Upgrade to Pro</Button>
-            </Link>
+            <CheckoutButton className="w-full" />
           </div>
         </div>
       </section>
