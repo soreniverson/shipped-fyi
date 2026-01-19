@@ -15,10 +15,14 @@ export default function LoginPage() {
     setMessage(null)
 
     const supabase = createClient()
+    const redirectUrl = process.env.NEXT_PUBLIC_APP_URL
+      ? `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?next=/dashboard`
+      : `${window.location.origin}/auth/callback?next=/dashboard`
+
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        emailRedirectTo: redirectUrl,
       },
     })
 
