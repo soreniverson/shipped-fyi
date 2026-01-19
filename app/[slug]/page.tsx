@@ -1,0 +1,76 @@
+import { createClient } from '@/lib/supabase/server'
+import { notFound } from 'next/navigation'
+import Link from 'next/link'
+import { PublicBoard } from './PublicBoard'
+
+interface Props {
+  params: Promise<{ slug: string }>
+}
+
+export default async function PublicBoardPage({ params }: Props) {
+  const { slug } = await params
+  const supabase = await createClient()
+
+  const { data: project } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('slug', slug)
+    .single()
+
+  if (!project) {
+    notFound()
+  }
+
+  const { data: items } = await supabase
+    .from('items')
+    .select('*')
+    .eq('project_id', project.id)
+    .in('status', ['considering', 'planned', 'in_progress'])
+    .order('vote_count', { ascending: false })
+
+  return (
+    <div className="min-h-screen bg-sand-50">
+      <header className="bg-white border-b border-sand-200">
+        <div className="max-w-3xl mx-auto px-4 py-6">
+          <h1 className="text-2xl font-semibold text-sand-900">{project.name}</h1>
+          <p className="text-sand-600 mt-1">Share your ideas and vote on what we should build next</p>
+          <nav className="flex gap-4 mt-4">
+            <Link
+              href={`/${project.slug}`}
+              className="text-sm font-medium text-primary border-b-2 border-primary pb-1"
+            >
+              Feedback
+            </Link>
+            <Link
+              href={`/${project.slug}/roadmap`}
+              className="text-sm text-sand-600 hover:text-sand-900 pb-1"
+            >
+              Roadmap
+            </Link>
+            <Link
+              href={`/${project.slug}/changelog`}
+              className="text-sm text-sand-600 hover:text-sand-900 pb-1"
+            >
+              Changelog
+            </Link>
+          </nav>
+        </div>
+      </header>
+
+      <main className="max-w-3xl mx-auto px-4 py-8">
+        <PublicBoard project={project} initialItems={items || []} />
+      </main>
+
+      <footer className="border-t border-sand-200 mt-auto">
+        <div className="max-w-3xl mx-auto px-4 py-6 text-center">
+          <p className="text-sm text-sand-500">
+            Powered by{' '}
+            <Link href="/" className="text-sand-700 hover:text-sand-900">
+              shipped.fyi
+            </Link>
+          </p>
+        </div>
+      </footer>
+    </div>
+  )
+}
