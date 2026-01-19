@@ -17,27 +17,23 @@ export default async function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-sand-50">
-      <header className="bg-white border-b border-sand-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-8">
-              <Link href="/dashboard" className="text-xl font-semibold text-sand-900">
-                shipped.fyi
-              </Link>
-              <nav className="hidden sm:flex items-center gap-6">
-                <Link href="/dashboard" className="text-sm text-sand-600 hover:text-sand-900 transition-colors">
-                  Projects
-                </Link>
-              </nav>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-sand-500">{user.email}</span>
-              <LogoutButton />
-            </div>
+      <header>
+        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-6">
+            <Link href="/dashboard" className="text-xl font-semibold text-sand-900">
+              shipped.fyi
+            </Link>
+            <Link href="/dashboard" className="text-sm text-sand-500 hover:text-sand-700">
+              Projects
+            </Link>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-sand-400">{user.email}</span>
+            <LogoutButton />
           </div>
         </div>
       </header>
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-6xl mx-auto px-6 py-6">
         {children}
       </main>
     </div>

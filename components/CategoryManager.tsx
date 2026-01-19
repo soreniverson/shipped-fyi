@@ -1,12 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Category } from '@/lib/supabase/types'
 import { CATEGORY_COLORS, CategoryColor } from '@/lib/category-colors'
-import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
-import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { CategoryBadge } from './CategoryBadge'
 
 interface CategoryManagerProps {
@@ -18,11 +15,31 @@ interface CategoryManagerProps {
 const colorOptions = Object.keys(CATEGORY_COLORS) as CategoryColor[]
 
 export function CategoryManager({ projectId, categories, onCategoriesChange }: CategoryManagerProps) {
-  const [showForm, setShowForm] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
   const [color, setColor] = useState<CategoryColor>('gray')
   const [loading, setLoading] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
+  const popoverRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (isOpen && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [isOpen])
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (popoverRef.current && !popoverRef.current.contains(event.target as Node)) {
+        resetForm()
+      }
+    }
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [isOpen])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -63,12 +80,10 @@ export function CategoryManager({ projectId, categories, onCategoriesChange }: C
     setEditingId(category.id)
     setName(category.name)
     setColor(category.color)
-    setShowForm(true)
+    setIsOpen(true)
   }
 
   const handleDelete = async (categoryId: string) => {
-    if (!confirm('Delete this category? Items with this category will become uncategorized.')) return
-
     const supabase = createClient()
     const { error } = await supabase.from('categories').delete().eq('id', categoryId)
 
@@ -80,93 +95,79 @@ export function CategoryManager({ projectId, categories, onCategoriesChange }: C
   const resetForm = () => {
     setName('')
     setColor('gray')
-    setShowForm(false)
+    setIsOpen(false)
     setEditingId(null)
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <h2 className="font-medium text-sand-900">Categories</h2>
-          {!showForm && (
-            <Button size="sm" onClick={() => setShowForm(true)}>
-              Add category
-            </Button>
-          )}
-        </div>
-      </CardHeader>
-      <CardContent>
-        {showForm && (
-          <form onSubmit={handleSubmit} className="mb-4 p-3 bg-sand-50 rounded-lg">
-            <div className="space-y-3">
-              <Input
-                label="Name"
-                id="category-name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="e.g., Bug, Feature, Enhancement"
-                required
-              />
-              <div>
-                <label className="block text-sm font-medium text-sand-700 mb-1">Color</label>
-                <div className="flex flex-wrap gap-2">
-                  {colorOptions.map((c) => (
-                    <button
-                      key={c}
-                      type="button"
-                      onClick={() => setColor(c)}
-                      className={`w-8 h-8 rounded-full ${CATEGORY_COLORS[c].bg} ${
-                        color === c ? 'ring-2 ring-offset-2 ring-primary' : ''
-                      }`}
-                      title={c}
-                    />
-                  ))}
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <Button type="submit" size="sm" disabled={loading || !name.trim()}>
-                  {loading ? 'Saving...' : editingId ? 'Update' : 'Add'}
-                </Button>
-                <Button type="button" size="sm" variant="secondary" onClick={resetForm}>
-                  Cancel
-                </Button>
-              </div>
+    <div className="relative" ref={popoverRef}>
+      <div className="flex items-center gap-2 flex-wrap">
+        {categories.map((category) => (
+          <div key={category.id} className="group relative">
+            <button
+              onClick={() => handleEdit(category)}
+              className="focus:outline-none"
+            >
+              <CategoryBadge category={category} />
+            </button>
+            <button
+              onClick={() => handleDelete(category.id)}
+              className="absolute -top-1 -right-1 w-4 h-4 bg-sand-200 hover:bg-red-100 text-sand-500 hover:text-red-600 rounded-full hidden group-hover:flex items-center justify-center text-xs"
+            >
+              ×
+            </button>
+          </div>
+        ))}
+        <button
+          onClick={() => setIsOpen(true)}
+          className="w-6 h-6 rounded-full border border-dashed border-sand-300 text-sand-400 hover:border-sand-400 hover:text-sand-500 flex items-center justify-center text-sm"
+        >
+          +
+        </button>
+      </div>
+
+      {isOpen && (
+        <div className="absolute top-full left-0 mt-2 z-20 bg-white rounded-lg shadow-lg border border-sand-200 p-3 w-56">
+          <form onSubmit={handleSubmit}>
+            <input
+              ref={inputRef}
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Category name"
+              className="w-full px-3 py-2 text-sm rounded-md border border-sand-200 focus:outline-none focus:ring-2 focus:ring-sand-900 focus:border-transparent mb-2"
+            />
+            <div className="flex gap-1.5 mb-3">
+              {colorOptions.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => setColor(c)}
+                  className={`w-6 h-6 rounded-full ${CATEGORY_COLORS[c].bg} ${
+                    color === c ? 'ring-2 ring-offset-1 ring-sand-900' : ''
+                  }`}
+                />
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                disabled={loading || !name.trim()}
+                className="flex-1 px-3 py-1.5 bg-sand-900 text-white text-sm rounded-md hover:bg-sand-800 disabled:opacity-50"
+              >
+                {editingId ? 'Save' : 'Add'}
+              </button>
+              <button
+                type="button"
+                onClick={resetForm}
+                className="px-3 py-1.5 text-sand-600 text-sm hover:text-sand-900"
+              >
+                Cancel
+              </button>
             </div>
           </form>
-        )}
-
-        {categories.length > 0 ? (
-          <div className="space-y-2">
-            {categories.map((category) => (
-              <div
-                key={category.id}
-                className="flex items-center justify-between p-2 rounded-lg hover:bg-sand-50"
-              >
-                <CategoryBadge category={category} />
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleEdit(category)}
-                    className="text-xs text-sand-600 hover:text-sand-900"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(category.id)}
-                    className="text-xs text-red-600 hover:text-red-700"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          !showForm && (
-            <p className="text-sm text-sand-500">No categories yet. Add one to organize your items.</p>
-          )
-        )}
-      </CardContent>
-    </Card>
+        </div>
+      )}
+    </div>
   )
 }
