@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
-import { PLANS } from '@/lib/stripe'
+import { PLANS } from '@/lib/plans'
 
 interface UpgradeModalProps {
   isOpen: boolean
