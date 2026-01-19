@@ -13,7 +13,7 @@ export default function LandingPage() {
       </div>
 
       {/* Header */}
-      <header className="relative border-b border-sand-200">
+      <header className="sticky top-0 z-50 border-b border-sand-200 bg-sand-50/90 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
           <span className="text-xl font-semibold text-sand-900">shipped.fyi</span>
           <div className="flex items-center gap-4">
