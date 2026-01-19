@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
+import { UpgradeModal } from '@/components/UpgradeModal'
 
 function slugify(text: string): string {
   return text
@@ -20,6 +21,8 @@ export default function NewProjectPage() {
   const [slug, setSlug] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  const [upgradeMessage, setUpgradeMessage] = useState('')
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newName = e.target.value
@@ -31,6 +34,17 @@ export default function NewProjectPage() {
     e.preventDefault()
     setLoading(true)
     setError('')
+
+    // Check limit first
+    const limitResponse = await fetch('/api/limits/project')
+    const limitData = await limitResponse.json()
+
+    if (!limitData.allowed) {
+      setUpgradeMessage(limitData.message)
+      setShowUpgradeModal(true)
+      setLoading(false)
+      return
+    }
 
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
@@ -62,6 +76,11 @@ export default function NewProjectPage() {
 
   return (
     <div className="max-w-lg mx-auto">
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        message={upgradeMessage}
+      />
       <Card>
         <CardHeader>
           <h1 className="text-xl font-semibold text-sand-900">Create a new project</h1>

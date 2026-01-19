@@ -7,6 +7,15 @@ interface Props {
   params: Promise<{ slug: string }>
 }
 
+async function getOwnerPlan(ownerId: string, supabase: Awaited<ReturnType<typeof createClient>>): Promise<string> {
+  const { data } = await supabase
+    .from('subscriptions')
+    .select('plan')
+    .eq('user_id', ownerId)
+    .single()
+  return data?.plan || 'free'
+}
+
 export default async function ChangelogPage({ params }: Props) {
   const { slug } = await params
   const supabase = await createClient()
@@ -21,12 +30,17 @@ export default async function ChangelogPage({ params }: Props) {
     notFound()
   }
 
-  const { data: items } = await supabase
-    .from('items')
-    .select('*')
-    .eq('project_id', project.id)
-    .eq('status', 'shipped')
-    .order('shipped_at', { ascending: false })
+  const [{ data: items }, ownerPlan] = await Promise.all([
+    supabase
+      .from('items')
+      .select('*')
+      .eq('project_id', project.id)
+      .eq('status', 'shipped')
+      .order('shipped_at', { ascending: false }),
+    getOwnerPlan(project.owner_id, supabase)
+  ])
+
+  const showPoweredBy = ownerPlan === 'free'
 
   // Group items by date
   type ItemType = NonNullable<typeof items>[number]
@@ -111,16 +125,18 @@ export default async function ChangelogPage({ params }: Props) {
         )}
       </main>
 
-      <footer className="border-t border-sand-200 mt-auto">
-        <div className="max-w-3xl mx-auto px-4 py-6 text-center">
-          <p className="text-sm text-sand-500">
-            Powered by{' '}
-            <Link href="/" className="text-sand-700 hover:text-sand-900">
-              shipped.fyi
-            </Link>
-          </p>
-        </div>
-      </footer>
+      {showPoweredBy && (
+        <footer className="border-t border-sand-200 mt-auto">
+          <div className="max-w-3xl mx-auto px-4 py-6 text-center">
+            <p className="text-sm text-sand-500">
+              Powered by{' '}
+              <Link href="/" className="text-sand-700 hover:text-sand-900">
+                shipped.fyi
+              </Link>
+            </p>
+          </div>
+        </footer>
+      )}
     </div>
   )
 }

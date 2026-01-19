@@ -7,6 +7,15 @@ interface Props {
   params: Promise<{ slug: string }>
 }
 
+async function getOwnerPlan(ownerId: string, supabase: Awaited<ReturnType<typeof createClient>>): Promise<string> {
+  const { data } = await supabase
+    .from('subscriptions')
+    .select('plan')
+    .eq('user_id', ownerId)
+    .single()
+  return data?.plan || 'free'
+}
+
 export default async function PublicBoardPage({ params }: Props) {
   const { slug } = await params
   const supabase = await createClient()
@@ -21,12 +30,17 @@ export default async function PublicBoardPage({ params }: Props) {
     notFound()
   }
 
-  const { data: items } = await supabase
-    .from('items')
-    .select('*')
-    .eq('project_id', project.id)
-    .in('status', ['considering', 'planned', 'in_progress'])
-    .order('vote_count', { ascending: false })
+  const [{ data: items }, ownerPlan] = await Promise.all([
+    supabase
+      .from('items')
+      .select('*')
+      .eq('project_id', project.id)
+      .in('status', ['considering', 'planned', 'in_progress'])
+      .order('vote_count', { ascending: false }),
+    getOwnerPlan(project.owner_id, supabase)
+  ])
+
+  const showPoweredBy = ownerPlan === 'free'
 
   return (
     <div className="min-h-screen bg-sand-50">
@@ -61,16 +75,18 @@ export default async function PublicBoardPage({ params }: Props) {
         <PublicBoard project={project} initialItems={items || []} />
       </main>
 
-      <footer className="border-t border-sand-200 mt-auto">
-        <div className="max-w-3xl mx-auto px-4 py-6 text-center">
-          <p className="text-sm text-sand-500">
-            Powered by{' '}
-            <Link href="/" className="text-sand-700 hover:text-sand-900">
-              shipped.fyi
-            </Link>
-          </p>
-        </div>
-      </footer>
+      {showPoweredBy && (
+        <footer className="border-t border-sand-200 mt-auto">
+          <div className="max-w-3xl mx-auto px-4 py-6 text-center">
+            <p className="text-sm text-sand-500">
+              Powered by{' '}
+              <Link href="/" className="text-sand-700 hover:text-sand-900">
+                shipped.fyi
+              </Link>
+            </p>
+          </div>
+        </footer>
+      )}
     </div>
   )
 }

@@ -156,3 +156,32 @@ $$ language plpgsql;
 create trigger on_item_status_change
   before update on items
   for each row execute function set_shipped_at();
+
+-- Subscriptions (Stripe integration)
+create table subscriptions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users not null unique,
+  stripe_customer_id text unique,
+  stripe_subscription_id text unique,
+  plan text default 'free' check (plan in ('free', 'pro')),
+  status text default 'active' check (status in ('active', 'canceled', 'past_due', 'trialing')),
+  current_period_end timestamptz,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create index subscriptions_user_id_idx on subscriptions(user_id);
+create index subscriptions_stripe_customer_id_idx on subscriptions(stripe_customer_id);
+
+-- Enable RLS on subscriptions
+alter table subscriptions enable row level security;
+
+-- Users can only read their own subscription
+create policy "Users can view their own subscription"
+  on subscriptions for select
+  using (auth.uid() = user_id);
+
+-- Only service role can insert/update (via webhooks)
+create policy "Service role can manage subscriptions"
+  on subscriptions for all
+  using (auth.role() = 'service_role');
