@@ -55,7 +55,7 @@ export default function PricingPage() {
     },
     {
       q: 'Do you offer refunds?',
-      a: "If you're not happy within the first 14 days, contact us for a full refund.",
+      a: "All sales are final. We don't offer refunds, but you can cancel your subscription anytime and continue using Pro until the end of your billing period.",
     },
   ]
 

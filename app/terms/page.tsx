@@ -9,9 +9,17 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-sand-50">
+    <div className="min-h-screen bg-sand-50 relative">
+      {/* Vertical grid lines */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="max-w-4xl mx-auto h-full relative">
+          <div className="absolute left-0 top-0 bottom-0 w-px bg-sand-200"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-px bg-sand-200"></div>
+        </div>
+      </div>
+
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-sand-200 bg-sand-50/90 backdrop-blur-sm">
+      <header className="sticky top-0 z-50 border-b border-sand-200 bg-sand-50/90 backdrop-blur-sm relative">
         <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/" className="text-xl font-semibold text-sand-900">
             shipped.fyi
@@ -30,7 +38,7 @@ export default function TermsPage() {
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-6 py-12">
+      <main className="max-w-2xl mx-auto px-6 py-12 relative">
         <h1 className="text-2xl font-semibold text-sand-900 mb-2">Terms of Service</h1>
         <p className="text-sand-500 text-sm mb-8">Last updated: January 19, 2026</p>
 
@@ -38,7 +46,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-sand-900 font-medium mb-3">1. Acceptance of Terms</h2>
             <p>
-              By accessing and using shipped.fyi ("the Service"), you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our Service.
+              By accessing and using shipped.fyi (&quot;the Service&quot;), you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our Service.
             </p>
           </section>
 
@@ -78,7 +86,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-sand-900 font-medium mb-3">6. Payment and Billing</h2>
             <p>
-              Paid subscriptions are billed on a recurring basis. You may cancel your subscription at any time. Refunds are provided at our discretion.
+              Paid subscriptions are billed on a recurring basis. You may cancel your subscription at any time. All sales are final and we do not offer refunds.
             </p>
           </section>
 
@@ -113,7 +121,7 @@ export default function TermsPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-sand-200">
+      <footer className="border-t border-sand-200 relative">
         <div className="max-w-4xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
@@ -121,11 +129,11 @@ export default function TermsPage() {
               <p className="text-sand-500 text-sm mt-1">Simple feedback for indie hackers</p>
             </div>
             <div className="flex items-center gap-6">
-              <Link href="/" className="text-sm text-sand-600 hover:text-sand-900">
-                Home
-              </Link>
               <Link href="/pricing" className="text-sm text-sand-600 hover:text-sand-900">
                 Pricing
+              </Link>
+              <Link href="/terms" className="text-sm text-sand-600 hover:text-sand-900">
+                Terms
               </Link>
               <Link href="/privacy" className="text-sm text-sand-600 hover:text-sand-900">
                 Privacy
