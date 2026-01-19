@@ -19,6 +19,9 @@ export default function PricingPage() {
         <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/" className="text-xl font-semibold text-sand-900">shipped.fyi</Link>
           <div className="flex items-center gap-4">
+            <Link href="/pricing" className="text-sm text-sand-600 hover:text-sand-900">
+              Pricing
+            </Link>
             <Link href="/login" className="text-sm text-sand-600 hover:text-sand-900">
               Sign in
             </Link>

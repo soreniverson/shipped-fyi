@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
+import { Button } from '@/components/ui/Button'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -21,6 +22,9 @@ export default function PrivacyPage() {
             </Link>
             <Link href="/login" className="text-sm text-sand-600 hover:text-sand-900">
               Sign in
+            </Link>
+            <Link href="/login">
+              <Button size="sm">Get started</Button>
             </Link>
           </div>
         </div>
