@@ -221,7 +221,15 @@ export default function LandingPage() {
       <footer className="border-t border-sand-200 relative">
         <div className="max-w-4xl mx-auto px-6 py-6">
           <div className="flex justify-between items-center">
-            <span className="text-sand-400 text-sm">shipped.fyi</span>
+            <div className="flex items-center gap-4">
+              <span className="text-sand-400 text-sm">shipped.fyi</span>
+              <Link href="/terms" className="text-xs text-sand-400 hover:text-sand-600">
+                Terms
+              </Link>
+              <Link href="/privacy" className="text-xs text-sand-400 hover:text-sand-600">
+                Privacy
+              </Link>
+            </div>
             <div className="flex items-center gap-4">
               <Link href="/pricing" className="text-sm text-sand-500 hover:text-sand-700">
                 Pricing
