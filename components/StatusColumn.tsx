@@ -1,15 +1,17 @@
 'use client'
 
-import { Item, ItemStatus } from '@/lib/supabase/types'
+import { Item, ItemStatus, Category } from '@/lib/supabase/types'
 import { FeedbackCard } from './FeedbackCard'
 
 interface StatusColumnProps {
   title: string
   status: ItemStatus
-  items: Item[]
+  items: (Item & { category?: Category | null })[]
   onStatusChange: (itemId: string, newStatus: ItemStatus) => void
+  onCategoryChange?: (itemId: string, categoryId: string | null) => void
   onDelete: (itemId: string) => void
   isOwner?: boolean
+  categories?: Category[]
 }
 
 const statusColors: Record<ItemStatus, string> = {
@@ -26,7 +28,7 @@ const statusLabels: Record<ItemStatus, string> = {
   shipped: 'Shipped',
 }
 
-export function StatusColumn({ title, status, items, onStatusChange, onDelete, isOwner }: StatusColumnProps) {
+export function StatusColumn({ title, status, items, onStatusChange, onCategoryChange, onDelete, isOwner, categories = [] }: StatusColumnProps) {
   return (
     <div className="bg-sand-100/50 rounded-xl p-4 min-h-[200px]">
       <div className="flex items-center justify-between mb-4">
@@ -41,8 +43,10 @@ export function StatusColumn({ title, status, items, onStatusChange, onDelete, i
             key={item.id}
             item={item}
             onStatusChange={onStatusChange}
+            onCategoryChange={onCategoryChange}
             onDelete={onDelete}
             isOwner={isOwner}
+            categories={categories}
           />
         ))}
         {items.length === 0 && (

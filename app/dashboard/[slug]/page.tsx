@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { ProjectManager } from './ProjectManager'
+import { Category } from '@/lib/supabase/types'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -30,11 +31,25 @@ export default async function ProjectPage({ params }: Props) {
     redirect('/dashboard')
   }
 
-  const { data: items } = await supabase
-    .from('items')
-    .select('*')
-    .eq('project_id', project.id)
-    .order('vote_count', { ascending: false })
+  const [{ data: items }, { data: categories }] = await Promise.all([
+    supabase
+      .from('items')
+      .select('*')
+      .eq('project_id', project.id)
+      .order('vote_count', { ascending: false }),
+    supabase
+      .from('categories')
+      .select('*')
+      .eq('project_id', project.id)
+      .order('name')
+  ])
+
+  // Map categories to items
+  const categoryMap = new Map((categories || []).map((c: Category) => [c.id, c]))
+  const itemsWithCategories = (items || []).map((item) => ({
+    ...item,
+    category: item.category_id ? categoryMap.get(item.category_id) : null
+  }))
 
   return (
     <div>
@@ -48,7 +63,11 @@ export default async function ProjectPage({ params }: Props) {
         </p>
       </div>
 
-      <ProjectManager project={project} initialItems={items || []} />
+      <ProjectManager
+        project={project}
+        initialItems={itemsWithCategories}
+        initialCategories={categories || []}
+      />
     </div>
   )
 }

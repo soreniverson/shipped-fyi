@@ -1,0 +1,52 @@
+# shipped.fyi
+
+> Simple feedback board, roadmap, and changelog tool for your product.
+
+## About
+
+shipped.fyi is a product feedback management tool that helps teams:
+- Collect user feedback through a public feedback board
+- Organize features with categories
+- Track progress with a public roadmap
+- Celebrate shipped features with a changelog
+- Notify voters when their requested features ship
+
+## Features
+
+### Feedback Board
+Public-facing board where users can submit ideas and vote on features they want built.
+
+### Roadmap
+Visual representation of what's planned and in progress.
+
+### Changelog
+Celebrate shipped features and keep users informed of progress.
+
+### Categories
+Organize feedback items by type (Bug, Feature, Enhancement, etc.)
+
+### Voter Notifications
+Users can opt-in to receive email notifications when features they voted for ship.
+
+## Pricing
+
+- **Free Plan**: 1 project, 50 items, core features
+- **Pro Plan ($9/month)**: Unlimited projects, unlimited items, remove branding
+
+## API
+
+shipped.fyi is built with Next.js and Supabase. Public boards are accessible at:
+- Feedback: `/{project-slug}`
+- Roadmap: `/{project-slug}/roadmap`
+- Changelog: `/{project-slug}/changelog`
+
+## Contact
+
+- Website: https://shipped.fyi
+- Support: support@shipped.fyi
+
+## Links
+
+- [Terms of Service](https://shipped.fyi/terms)
+- [Privacy Policy](https://shipped.fyi/privacy)
+- [Pricing](https://shipped.fyi/pricing)

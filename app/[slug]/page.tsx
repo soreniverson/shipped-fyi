@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { PublicBoard } from './PublicBoard'
+import { Category } from '@/lib/supabase/types'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -30,17 +31,29 @@ export default async function PublicBoardPage({ params }: Props) {
     notFound()
   }
 
-  const [{ data: items }, ownerPlan] = await Promise.all([
+  const [{ data: items }, { data: categories }, ownerPlan] = await Promise.all([
     supabase
       .from('items')
       .select('*')
       .eq('project_id', project.id)
       .in('status', ['considering', 'planned', 'in_progress'])
       .order('vote_count', { ascending: false }),
+    supabase
+      .from('categories')
+      .select('*')
+      .eq('project_id', project.id)
+      .order('name'),
     getOwnerPlan(project.owner_id, supabase)
   ])
 
   const showPoweredBy = ownerPlan === 'free'
+
+  // Map categories to items
+  const categoryMap = new Map((categories || []).map((c: Category) => [c.id, c]))
+  const itemsWithCategories = (items || []).map((item) => ({
+    ...item,
+    category: item.category_id ? categoryMap.get(item.category_id) : null
+  }))
 
   return (
     <div className="min-h-screen bg-sand-50">
@@ -72,7 +85,11 @@ export default async function PublicBoardPage({ params }: Props) {
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-8">
-        <PublicBoard project={project} initialItems={items || []} />
+        <PublicBoard
+          project={project}
+          initialItems={itemsWithCategories}
+          categories={categories || []}
+        />
       </main>
 
       {showPoweredBy && (

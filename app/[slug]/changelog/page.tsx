@@ -2,10 +2,14 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/Card'
+import { CategoryBadge } from '@/components/CategoryBadge'
+import { Item, Category } from '@/lib/supabase/types'
 
 interface Props {
   params: Promise<{ slug: string }>
 }
+
+type ItemWithCategory = Item & { category?: Category | null }
 
 async function getOwnerPlan(ownerId: string, supabase: Awaited<ReturnType<typeof createClient>>): Promise<string> {
   const { data } = await supabase
@@ -30,21 +34,31 @@ export default async function ChangelogPage({ params }: Props) {
     notFound()
   }
 
-  const [{ data: items }, ownerPlan] = await Promise.all([
+  const [{ data: items }, { data: categories }, ownerPlan] = await Promise.all([
     supabase
       .from('items')
       .select('*')
       .eq('project_id', project.id)
       .eq('status', 'shipped')
       .order('shipped_at', { ascending: false }),
+    supabase
+      .from('categories')
+      .select('*')
+      .eq('project_id', project.id),
     getOwnerPlan(project.owner_id, supabase)
   ])
 
   const showPoweredBy = ownerPlan === 'free'
 
+  // Map categories to items
+  const categoryMap = new Map((categories || []).map((c: Category) => [c.id, c]))
+  const itemsWithCategories: ItemWithCategory[] = (items || []).map((item) => ({
+    ...item,
+    category: item.category_id ? categoryMap.get(item.category_id) : null
+  }))
+
   // Group items by date
-  type ItemType = NonNullable<typeof items>[number]
-  const groupedItems = items?.reduce<Record<string, ItemType[]>>((acc, item) => {
+  const groupedItems = itemsWithCategories.reduce<Record<string, ItemWithCategory[]>>((acc, item) => {
     const date = item.shipped_at
       ? new Date(item.shipped_at).toLocaleDateString('en-US', {
           year: 'numeric',
@@ -101,10 +115,11 @@ export default async function ChangelogPage({ params }: Props) {
                   {dateItems?.map((item) => (
                     <Card key={item.id}>
                       <CardContent className="py-4">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
                             Shipped
                           </span>
+                          {item.category && <CategoryBadge category={item.category} />}
                           <span className="text-sm text-sand-500">{item.vote_count} votes</span>
                         </div>
                         <h3 className="font-medium text-sand-900 mt-2">{item.title}</h3>

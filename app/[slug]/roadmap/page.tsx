@@ -2,11 +2,14 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/Card'
-import { Item } from '@/lib/supabase/types'
+import { CategoryBadge } from '@/components/CategoryBadge'
+import { Item, Category } from '@/lib/supabase/types'
 
 interface Props {
   params: Promise<{ slug: string }>
 }
+
+type ItemWithCategory = Item & { category?: Category | null }
 
 const statusLabels: Record<string, string> = {
   planned: 'Planned',
@@ -41,22 +44,33 @@ export default async function RoadmapPage({ params }: Props) {
     notFound()
   }
 
-  const [{ data: items }, ownerPlan] = await Promise.all([
+  const [{ data: items }, { data: categories }, ownerPlan] = await Promise.all([
     supabase
       .from('items')
       .select('*')
       .eq('project_id', project.id)
       .in('status', ['planned', 'in_progress'])
       .order('vote_count', { ascending: false }),
+    supabase
+      .from('categories')
+      .select('*')
+      .eq('project_id', project.id),
     getOwnerPlan(project.owner_id, supabase)
   ])
 
   const showPoweredBy = ownerPlan === 'free'
 
-  const plannedItems = items?.filter((item) => item.status === 'planned') || []
-  const inProgressItems = items?.filter((item) => item.status === 'in_progress') || []
+  // Map categories to items
+  const categoryMap = new Map((categories || []).map((c: Category) => [c.id, c]))
+  const itemsWithCategories: ItemWithCategory[] = (items || []).map((item) => ({
+    ...item,
+    category: item.category_id ? categoryMap.get(item.category_id) : null
+  }))
 
-  const renderSection = (title: string, status: string, items: Item[]) => (
+  const plannedItems = itemsWithCategories.filter((item) => item.status === 'planned')
+  const inProgressItems = itemsWithCategories.filter((item) => item.status === 'in_progress')
+
+  const renderSection = (title: string, status: string, items: ItemWithCategory[]) => (
     <div className="mb-8">
       <h2 className="text-lg font-medium text-sand-900 mb-4 flex items-center gap-2">
         <span className={`w-3 h-3 rounded-full ${status === 'in_progress' ? 'bg-blue-500' : 'bg-violet-500'}`} />
@@ -70,7 +84,10 @@ export default async function RoadmapPage({ params }: Props) {
               <CardContent className="py-4">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <h3 className="font-medium text-sand-900">{item.title}</h3>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="font-medium text-sand-900">{item.title}</h3>
+                      {item.category && <CategoryBadge category={item.category} />}
+                    </div>
                     {item.description && (
                       <p className="text-sm text-sand-600 mt-1">{item.description}</p>
                     )}
