@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { CheckoutButton } from '@/components/CheckoutButton'
 import { PLANS } from '@/lib/plans'
 

@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Button } from './ui/Button'
-import { Input } from './ui/Input'
-import { Textarea } from './ui/Textarea'
+import { Button } from './ui/button'
+import { Input } from './ui/form-input'
+import { Textarea } from './ui/form-textarea'
 
 interface SubmitIdeaFormProps {
   projectId: string

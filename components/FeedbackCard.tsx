@@ -1,8 +1,17 @@
 'use client'
 
 import { Item, ItemStatus, Category } from '@/lib/supabase/types'
-import { Card, CardContent } from './ui/Card'
+import { Card, CardContent } from './ui/card'
 import { CategoryBadge } from './CategoryBadge'
+import { Button } from './ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select'
+import { ChevronUp, Trash2 } from 'lucide-react'
 
 interface FeedbackCardProps {
   item: Item & { category?: Category | null }
@@ -17,6 +26,12 @@ interface FeedbackCardProps {
 }
 
 const statuses: ItemStatus[] = ['considering', 'planned', 'in_progress', 'shipped']
+const statusLabels: Record<ItemStatus, string> = {
+  considering: 'Considering',
+  planned: 'Planned',
+  in_progress: 'In Progress',
+  shipped: 'Shipped',
+}
 
 export function FeedbackCard({
   item,
@@ -52,9 +67,7 @@ export function FeedbackCard({
                   : 'bg-sand-50 text-sand-600 border-sand-200 hover:border-sand-300'
               } ${!onVote ? 'cursor-default' : 'cursor-pointer'}`}
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-              </svg>
+              <ChevronUp className="w-4 h-4" />
               <span className="text-xs font-medium">{item.vote_count}</span>
             </button>
           )}
@@ -63,39 +76,49 @@ export function FeedbackCard({
         {isOwner && (onStatusChange || onCategoryChange) && (
           <div className="mt-3 pt-3 border-t border-sand-100 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
             {onStatusChange && (
-              <select
+              <Select
                 value={item.status}
-                onChange={(e) => onStatusChange(item.id, e.target.value as ItemStatus)}
-                className="text-xs px-2 py-1 rounded border border-sand-200 bg-white text-sand-700 focus:outline-none focus:ring-1 focus:ring-primary"
+                onValueChange={(value) => onStatusChange(item.id, value as ItemStatus)}
               >
-                {statuses.map((status) => (
-                  <option key={status} value={status}>
-                    {status.replace('_', ' ')}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger className="w-auto h-7 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {statuses.map((status) => (
+                    <SelectItem key={status} value={status} className="text-xs">
+                      {statusLabels[status]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             )}
             {onCategoryChange && categories.length > 0 && (
-              <select
+              <Select
                 value={item.category_id || ''}
-                onChange={(e) => onCategoryChange(item.id, e.target.value || null)}
-                className="text-xs px-2 py-1 rounded border border-sand-200 bg-white text-sand-700 focus:outline-none focus:ring-1 focus:ring-primary"
+                onValueChange={(value) => onCategoryChange(item.id, value || null)}
               >
-                <option value="">No category</option>
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger className="w-auto h-7 text-xs">
+                  <SelectValue placeholder="No category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="" className="text-xs">No category</SelectItem>
+                  {categories.map((cat) => (
+                    <SelectItem key={cat.id} value={cat.id} className="text-xs">
+                      {cat.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             )}
             {onDelete && (
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => onDelete(item.id)}
-                className="text-xs text-red-600 hover:text-red-700 ml-auto"
+                className="ml-auto h-7 px-2 text-red-600 hover:text-red-700 hover:bg-red-50"
               >
-                Delete
-              </button>
+                <Trash2 className="w-3 h-3" />
+              </Button>
             )}
           </div>
         )}

@@ -5,6 +5,14 @@ import { createClient } from '@/lib/supabase/client'
 import { Category } from '@/lib/supabase/types'
 import { CATEGORY_COLORS, CategoryColor } from '@/lib/category-colors'
 import { CategoryBadge } from './CategoryBadge'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { Plus, X } from 'lucide-react'
 
 interface CategoryManagerProps {
   projectId: string
@@ -20,25 +28,12 @@ export function CategoryManager({ projectId, categories, onCategoriesChange }: C
   const [color, setColor] = useState<CategoryColor>('gray')
   const [loading, setLoading] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
-  const popoverRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus()
     }
-  }, [isOpen])
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (popoverRef.current && !popoverRef.current.contains(event.target as Node)) {
-        resetForm()
-      }
-    }
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-    }
-    return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isOpen])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -100,42 +95,41 @@ export function CategoryManager({ projectId, categories, onCategoriesChange }: C
   }
 
   return (
-    <div className="relative" ref={popoverRef}>
-      <div className="flex items-center gap-2 flex-wrap">
-        {categories.map((category) => (
-          <div key={category.id} className="group relative">
-            <button
-              onClick={() => handleEdit(category)}
-              className="focus:outline-none"
-            >
-              <CategoryBadge category={category} />
-            </button>
-            <button
-              onClick={() => handleDelete(category.id)}
-              className="absolute -top-1 -right-1 w-4 h-4 bg-sand-200 hover:bg-red-100 text-sand-500 hover:text-red-600 rounded-full hidden group-hover:flex items-center justify-center text-xs"
-            >
-              ×
-            </button>
-          </div>
-        ))}
-        <button
-          onClick={() => setIsOpen(true)}
-          className="w-6 h-6 rounded-full border border-dashed border-sand-300 text-sand-400 hover:border-sand-400 hover:text-sand-500 flex items-center justify-center text-sm"
-        >
-          +
-        </button>
-      </div>
+    <div className="flex items-center gap-2 flex-wrap">
+      {categories.map((category) => (
+        <div key={category.id} className="group relative">
+          <button
+            onClick={() => handleEdit(category)}
+            className="focus:outline-none"
+          >
+            <CategoryBadge category={category} />
+          </button>
+          <button
+            onClick={() => handleDelete(category.id)}
+            className="absolute -top-1 -right-1 w-4 h-4 bg-sand-200 hover:bg-red-100 text-sand-500 hover:text-red-600 rounded-full hidden group-hover:flex items-center justify-center text-xs"
+          >
+            <X className="w-3 h-3" />
+          </button>
+        </div>
+      ))}
 
-      {isOpen && (
-        <div className="absolute top-full left-0 mt-2 z-20 bg-white rounded-lg shadow-lg border border-sand-200 p-3 w-56">
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <PopoverTrigger asChild>
+          <button
+            className="w-6 h-6 rounded-full border border-dashed border-sand-300 text-sand-400 hover:border-sand-400 hover:text-sand-500 flex items-center justify-center"
+          >
+            <Plus className="w-3 h-3" />
+          </button>
+        </PopoverTrigger>
+        <PopoverContent className="w-56 p-3" align="start">
           <form onSubmit={handleSubmit}>
-            <input
+            <Input
               ref={inputRef}
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Category name"
-              className="w-full px-3 py-2 text-sm rounded-md border border-sand-200 focus:outline-none focus:ring-2 focus:ring-sand-900 focus:border-transparent mb-2"
+              className="mb-2 h-9"
             />
             <div className="flex gap-1.5 mb-3">
               {colorOptions.map((c) => (
@@ -150,24 +144,26 @@ export function CategoryManager({ projectId, categories, onCategoriesChange }: C
               ))}
             </div>
             <div className="flex gap-2">
-              <button
+              <Button
                 type="submit"
+                size="sm"
                 disabled={loading || !name.trim()}
-                className="flex-1 px-3 py-1.5 bg-sand-900 text-white text-sm rounded-md hover:bg-sand-800 disabled:opacity-50"
+                className="flex-1"
               >
                 {editingId ? 'Save' : 'Add'}
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
+                variant="ghost"
+                size="sm"
                 onClick={resetForm}
-                className="px-3 py-1.5 text-sand-600 text-sm hover:text-sand-900"
               >
                 Cancel
-              </button>
+              </Button>
             </div>
           </form>
-        </div>
-      )}
+        </PopoverContent>
+      </Popover>
     </div>
   )
 }

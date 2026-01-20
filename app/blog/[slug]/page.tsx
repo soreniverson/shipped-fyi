@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { PostBody } from '@/components/PostBody'
 import { getPostBySlug, getPostSlugs } from '@/lib/posts'
 

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { getChangelogByMonth } from '@/lib/posts'
 
 export const metadata: Metadata = {

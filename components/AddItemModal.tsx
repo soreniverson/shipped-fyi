@@ -2,6 +2,19 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { Category, ItemStatus } from '@/lib/supabase/types'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+} from '@/components/ui/dialog'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 interface AddItemModalProps {
   isOpen: boolean
@@ -11,6 +24,12 @@ interface AddItemModalProps {
 }
 
 const statuses: ItemStatus[] = ['considering', 'planned', 'in_progress', 'shipped']
+const statusLabels: Record<ItemStatus, string> = {
+  considering: 'Considering',
+  planned: 'Planned',
+  in_progress: 'In Progress',
+  shipped: 'Shipped',
+}
 
 export function AddItemModal({ isOpen, onClose, onSubmit, categories }: AddItemModalProps) {
   const [title, setTitle] = useState('')
@@ -22,19 +41,9 @@ export function AddItemModal({ isOpen, onClose, onSubmit, categories }: AddItemM
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
-      inputRef.current.focus()
+      setTimeout(() => inputRef.current?.focus(), 100)
     }
   }, [isOpen])
-
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-    if (isOpen) {
-      document.addEventListener('keydown', handleEsc)
-    }
-    return () => document.removeEventListener('keydown', handleEsc)
-  }, [isOpen, onClose])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -50,12 +59,9 @@ export function AddItemModal({ isOpen, onClose, onSubmit, categories }: AddItemM
     onClose()
   }
 
-  if (!isOpen) return null
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-      <div className="relative bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-md p-0">
         <form onSubmit={handleSubmit}>
           <div className="p-5">
             <input
@@ -76,53 +82,56 @@ export function AddItemModal({ isOpen, onClose, onSubmit, categories }: AddItemM
             />
           </div>
 
-          <div className="border-t border-sand-100 px-5 py-3 flex items-center justify-between">
+          <DialogFooter className="border-t border-sand-100 px-5 py-3 flex items-center justify-between sm:justify-between">
             <div className="flex items-center gap-3">
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value as ItemStatus)}
-                className="text-sm text-sand-600 bg-sand-50 border-0 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-sand-900"
-              >
-                {statuses.map((s) => (
-                  <option key={s} value={s}>
-                    {s.replace('_', ' ')}
-                  </option>
-                ))}
-              </select>
-              {categories.length > 0 && (
-                <select
-                  value={categoryId}
-                  onChange={(e) => setCategoryId(e.target.value)}
-                  className="text-sm text-sand-600 bg-sand-50 border-0 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-sand-900"
-                >
-                  <option value="">No category</option>
-                  {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.name}
-                    </option>
+              <Select value={status} onValueChange={(value) => setStatus(value as ItemStatus)}>
+                <SelectTrigger className="w-auto h-8 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {statuses.map((s) => (
+                    <SelectItem key={s} value={s} className="text-xs">
+                      {statusLabels[s]}
+                    </SelectItem>
                   ))}
-                </select>
+                </SelectContent>
+              </Select>
+              {categories.length > 0 && (
+                <Select value={categoryId} onValueChange={setCategoryId}>
+                  <SelectTrigger className="w-auto h-8 text-xs">
+                    <SelectValue placeholder="No category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="" className="text-xs">No category</SelectItem>
+                    {categories.map((cat) => (
+                      <SelectItem key={cat.id} value={cat.id} className="text-xs">
+                        {cat.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               )}
             </div>
             <div className="flex items-center gap-2">
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="sm"
                 onClick={onClose}
-                className="px-3 py-1.5 text-sm text-sand-600 hover:text-sand-900"
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
                 type="submit"
+                size="sm"
                 disabled={loading || !title.trim()}
-                className="px-4 py-1.5 bg-sand-900 text-white text-sm rounded-lg hover:bg-sand-800 disabled:opacity-50"
               >
                 {loading ? 'Adding...' : 'Add'}
-              </button>
+              </Button>
             </div>
-          </div>
+          </DialogFooter>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   )
 }

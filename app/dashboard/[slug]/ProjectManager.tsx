@@ -6,7 +6,7 @@ import { Project, Item, ItemStatus, Category } from '@/lib/supabase/types'
 import { StatusColumn } from '@/components/StatusColumn'
 import { CategoryManager } from '@/components/CategoryManager'
 import { AddItemModal } from '@/components/AddItemModal'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 
 type ItemWithCategory = Item & { category?: Category | null }
 

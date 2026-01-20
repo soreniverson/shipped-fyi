@@ -8,7 +8,7 @@ import { VoteButton } from '@/components/VoteButton'
 import { SubmitIdeaForm } from '@/components/SubmitIdeaForm'
 import { CategoryBadge } from '@/components/CategoryBadge'
 import { CategoryFilter } from '@/components/CategoryFilter'
-import { Card, CardContent } from '@/components/ui/Card'
+import { Card, CardContent } from '@/components/ui/card'
 
 type ItemWithCategory = Item & { category?: Category | null }
 

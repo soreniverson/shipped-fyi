@@ -27,6 +27,25 @@
   --status-planned: #8b5cf6;
   --status-in-progress: #3b82f6;
   --status-shipped: #10b981;
+
+  /* shadcn/ui CSS variables mapped to sand palette */
+  --card: 0 0% 100%;
+  --card-foreground: 30 6% 14%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 30 6% 14%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 37 19% 96%;
+  --secondary-foreground: 30 6% 14%;
+  --muted: 37 19% 96%;
+  --muted-foreground: 32 9% 45%;
+  --accent: 37 19% 96%;
+  --accent-foreground: 30 6% 14%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 35 16% 93%;
+  --input: 35 16% 93%;
+  --ring: 30 6% 14%;
+  --radius: 0.5rem;
 }
 
 @theme inline {
