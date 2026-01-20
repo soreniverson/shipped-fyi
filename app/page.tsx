@@ -17,6 +17,9 @@ export default function LandingPage() {
         <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
           <span className="text-xl font-semibold text-sand-900">shipped.fyi</span>
           <div className="flex items-center gap-4">
+            <Link href="/blog" className="text-sm text-sand-600 hover:text-sand-900">
+              Blog
+            </Link>
             <Link href="/pricing" className="text-sm text-sand-600 hover:text-sand-900">
               Pricing
             </Link>
@@ -226,6 +229,12 @@ export default function LandingPage() {
               <p className="text-sand-500 text-sm mt-1">Simple feedback for indie hackers</p>
             </div>
             <div className="flex items-center gap-6">
+              <Link href="/blog" className="text-sm text-sand-600 hover:text-sand-900">
+                Blog
+              </Link>
+              <Link href="/updates" className="text-sm text-sand-600 hover:text-sand-900">
+                Updates
+              </Link>
               <Link href="/pricing" className="text-sm text-sand-600 hover:text-sand-900">
                 Pricing
               </Link>

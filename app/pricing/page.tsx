@@ -74,7 +74,10 @@ export default function PricingPage() {
         <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/" className="text-xl font-semibold text-sand-900">shipped.fyi</Link>
           <div className="flex items-center gap-4">
-            <Link href="/pricing" className="text-sm text-sand-600 hover:text-sand-900">
+            <Link href="/blog" className="text-sm text-sand-600 hover:text-sand-900">
+              Blog
+            </Link>
+            <Link href="/pricing" className="text-sm text-sand-900 font-medium">
               Pricing
             </Link>
             <Link href="/login" className="text-sm text-sand-600 hover:text-sand-900">
@@ -179,6 +182,12 @@ export default function PricingPage() {
               <p className="text-sand-500 text-sm mt-1">Simple feedback for indie hackers</p>
             </div>
             <div className="flex items-center gap-6">
+              <Link href="/blog" className="text-sm text-sand-600 hover:text-sand-900">
+                Blog
+              </Link>
+              <Link href="/updates" className="text-sm text-sand-600 hover:text-sand-900">
+                Updates
+              </Link>
               <Link href="/pricing" className="text-sm text-sand-600 hover:text-sand-900">
                 Pricing
               </Link>

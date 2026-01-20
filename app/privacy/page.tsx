@@ -25,6 +25,9 @@ export default function PrivacyPage() {
             shipped.fyi
           </Link>
           <div className="flex items-center gap-4">
+            <Link href="/blog" className="text-sm text-sand-600 hover:text-sand-900">
+              Blog
+            </Link>
             <Link href="/pricing" className="text-sm text-sand-600 hover:text-sand-900">
               Pricing
             </Link>
@@ -148,6 +151,12 @@ export default function PrivacyPage() {
               <p className="text-sand-500 text-sm mt-1">Simple feedback for indie hackers</p>
             </div>
             <div className="flex items-center gap-6">
+              <Link href="/blog" className="text-sm text-sand-600 hover:text-sand-900">
+                Blog
+              </Link>
+              <Link href="/updates" className="text-sm text-sand-600 hover:text-sand-900">
+                Updates
+              </Link>
               <Link href="/pricing" className="text-sm text-sand-600 hover:text-sand-900">
                 Pricing
               </Link>
