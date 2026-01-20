@@ -152,6 +152,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="alternate" type="application/rss+xml" title="shipped.fyi RSS Feed" href="/feed.xml" />
         <meta name="theme-color" content="#ffffff" />
         <script
           type="application/ld+json"

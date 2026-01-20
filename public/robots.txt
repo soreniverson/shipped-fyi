@@ -2,7 +2,7 @@
 User-agent: *
 Allow: /
 
-# Sitemap
+# Sitemap & RSS Feed
 Sitemap: https://shipped.fyi/sitemap.xml
 
 # Disallow admin/dashboard areas
@@ -24,3 +24,13 @@ Allow: /
 
 User-agent: Google-Extended
 Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+# LLM-friendly resources
+# llms.txt: https://shipped.fyi/llms.txt
+# RSS Feed: https://shipped.fyi/feed.xml

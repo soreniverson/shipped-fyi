@@ -28,17 +28,44 @@ Organize feedback items by type (Bug, Feature, Enhancement, etc.)
 ### Voter Notifications
 Users can opt-in to receive email notifications when features they voted for ship.
 
+## Blog & Content
+
+shipped.fyi publishes content about product feedback, roadmaps, and building products:
+
+### Blog
+Long-form articles about product management, feedback collection, and building better products.
+- URL: https://shipped.fyi/blog
+- Topics: Product feedback, roadmaps, changelogs, indie hacking, product management
+
+### Updates (Changelog)
+Product updates and new feature announcements for shipped.fyi itself.
+- URL: https://shipped.fyi/updates
+
+### RSS Feed
+Subscribe to all content (blog posts and product updates):
+- URL: https://shipped.fyi/feed.xml
+
 ## Pricing
 
 - **Free Plan**: 1 project, 50 items, core features
 - **Pro Plan ($9/month)**: Unlimited projects, unlimited items, remove branding
 
-## API
+## Public URLs
 
-shipped.fyi is built with Next.js and Supabase. Public boards are accessible at:
-- Feedback: `/{project-slug}`
-- Roadmap: `/{project-slug}/roadmap`
-- Changelog: `/{project-slug}/changelog`
+shipped.fyi is built with Next.js and Supabase. Public pages include:
+
+### Marketing & Content
+- Homepage: https://shipped.fyi
+- Blog: https://shipped.fyi/blog
+- Updates: https://shipped.fyi/updates
+- Pricing: https://shipped.fyi/pricing
+- RSS Feed: https://shipped.fyi/feed.xml
+
+### User Projects
+Public boards are accessible at:
+- Feedback: `https://shipped.fyi/{project-slug}`
+- Roadmap: `https://shipped.fyi/{project-slug}/roadmap`
+- Changelog: `https://shipped.fyi/{project-slug}/changelog`
 
 ## Contact
 
@@ -47,6 +74,9 @@ shipped.fyi is built with Next.js and Supabase. Public boards are accessible at:
 
 ## Links
 
+- [Blog](https://shipped.fyi/blog)
+- [Updates](https://shipped.fyi/updates)
+- [Pricing](https://shipped.fyi/pricing)
 - [Terms of Service](https://shipped.fyi/terms)
 - [Privacy Policy](https://shipped.fyi/privacy)
-- [Pricing](https://shipped.fyi/pricing)
+- [RSS Feed](https://shipped.fyi/feed.xml)
