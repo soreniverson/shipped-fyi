@@ -1,6 +1,6 @@
 import * as React from "react"
-import { Input as BaseInput, InputProps } from "./input"
-import { Label } from "./label"
+import { Input as BaseInput, type InputProps } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 
 interface FormInputProps extends InputProps {

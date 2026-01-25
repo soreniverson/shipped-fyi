@@ -1,6 +1,6 @@
 import * as React from "react"
-import { Textarea, TextareaProps } from "./textarea"
-import { Label } from "./label"
+import { Textarea as BaseTextarea, type TextareaProps } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 
 interface FormTextareaProps extends TextareaProps {
@@ -17,7 +17,7 @@ const FormTextarea = React.forwardRef<HTMLTextAreaElement, FormTextareaProps>(
             {label}
           </Label>
         )}
-        <Textarea
+        <BaseTextarea
           ref={ref}
           id={id}
           className={cn(
