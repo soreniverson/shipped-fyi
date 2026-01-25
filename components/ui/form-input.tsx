@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Input, InputProps } from "./input"
+import { Input as BaseInput, InputProps } from "./input"
 import { Label } from "./label"
 import { cn } from "@/lib/utils"
 
@@ -17,7 +17,7 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
             {label}
           </Label>
         )}
-        <Input
+        <BaseInput
           ref={ref}
           id={id}
           className={cn(
