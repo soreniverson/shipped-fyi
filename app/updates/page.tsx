@@ -6,6 +6,9 @@ import { getChangelogByMonth } from '@/lib/posts'
 export const metadata: Metadata = {
   title: 'Updates | shipped.fyi',
   description: 'See what we\'ve shipped. Product updates and new features for shipped.fyi.',
+  alternates: {
+    canonical: '/updates',
+  },
   openGraph: {
     title: 'Updates | shipped.fyi',
     description: 'See what we\'ve shipped. Product updates and new features for shipped.fyi.',

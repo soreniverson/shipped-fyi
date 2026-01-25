@@ -7,6 +7,9 @@ import { getAllPosts } from '@/lib/posts'
 export const metadata: Metadata = {
   title: 'Blog | shipped.fyi',
   description: 'Insights on product feedback, roadmaps, and building products users love.',
+  alternates: {
+    canonical: '/blog',
+  },
   openGraph: {
     title: 'Blog | shipped.fyi',
     description: 'Insights on product feedback, roadmaps, and building products users love.',

@@ -5,6 +5,9 @@ import { Button } from '@/components/ui/button'
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: 'Privacy Policy for shipped.fyi',
+  alternates: {
+    canonical: '/privacy',
+  },
 }
 
 export default function PrivacyPage() {

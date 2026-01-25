@@ -5,6 +5,9 @@ import { Button } from '@/components/ui/button'
 export const metadata: Metadata = {
   title: 'Terms of Service',
   description: 'Terms of Service for shipped.fyi',
+  alternates: {
+    canonical: '/terms',
+  },
 }
 
 export default function TermsPage() {
