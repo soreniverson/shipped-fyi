@@ -2,19 +2,19 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { Category, ItemStatus } from '@/lib/supabase/types'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui'
 import {
   Dialog,
   DialogContent,
   DialogFooter,
-} from '@/components/ui/dialog'
+} from '@/components/ui'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@/components/ui'
 
 interface AddItemModalProps {
   isOpen: boolean

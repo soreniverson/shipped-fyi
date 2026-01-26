@@ -5,13 +5,13 @@ import { createClient } from '@/lib/supabase/client'
 import { Category } from '@/lib/supabase/types'
 import { CATEGORY_COLORS, CategoryColor } from '@/lib/category-colors'
 import { CategoryBadge } from './CategoryBadge'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui'
+import { Input } from '@/components/ui'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover'
+} from '@/components/ui'
 import { Plus, X } from 'lucide-react'
 
 interface CategoryManagerProps {

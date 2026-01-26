@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { getUserSubscription } from '@/lib/subscription'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui'
 import { BillingSection } from '@/components/BillingSection'
 import { PLANS } from '@/lib/stripe'
 

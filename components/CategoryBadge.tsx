@@ -1,5 +1,5 @@
 import { Category } from '@/lib/supabase/types'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@/components/ui'
 import { CategoryColor } from '@/lib/category-colors'
 
 interface CategoryBadgeProps {

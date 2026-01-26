@@ -2,7 +2,7 @@
 
 import { Item, ItemStatus, Category } from '@/lib/supabase/types'
 import { FeedbackCard } from './FeedbackCard'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@/components/ui'
 
 interface StatusColumnProps {
   title: string

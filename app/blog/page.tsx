@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui'
 import { PostCard } from '@/components/PostCard'
 import { getAllPosts } from '@/lib/posts'
 

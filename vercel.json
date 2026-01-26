@@ -1,8 +1,3 @@
 {
-  "build": {
-    "env": {
-      "TURBOPACK": "0",
-      "NEXT_PRIVATE_SKIP_TURBOPACK": "1"
-    }
-  }
+  "buildCommand": "npm run build"
 }

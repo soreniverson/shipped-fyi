@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui'
 import Link from 'next/link'
 
 interface CheckoutButtonProps {

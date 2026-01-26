@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui'
 import { CategoryBadge } from '@/components/CategoryBadge'
 import { Item, Category } from '@/lib/supabase/types'
 

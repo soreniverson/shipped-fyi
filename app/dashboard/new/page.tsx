@@ -3,9 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/form-input'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Button, FormInput as Input, Card, CardContent, CardHeader } from '@/components/ui'
 import { UpgradeModal } from '@/components/UpgradeModal'
 
 function slugify(text: string): string {

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui'
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
