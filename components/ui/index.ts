@@ -1,10 +1,10 @@
 // Primitive components
-export { Button, buttonVariants, type ButtonProps } from './button'
-export { Input, type InputProps } from './input'
-export { FormInput } from './form-input'
-export { Textarea, type TextareaProps } from './textarea'
-export { FormTextarea } from './form-textarea'
-export { Label } from './label'
+export { Button, buttonVariants, type ButtonProps } from './button.tsx'
+export { Input, type InputProps } from './input.tsx'
+export { FormInput } from './form-input.tsx'
+export { Textarea, type TextareaProps } from './textarea.tsx'
+export { FormTextarea } from './form-textarea.tsx'
+export { Label } from './label.tsx'
 export {
   Card,
   CardHeader,
@@ -12,10 +12,10 @@ export {
   CardTitle,
   CardDescription,
   CardContent,
-} from './card'
+} from './card.tsx'
 
 // Badge
-export { Badge, badgeVariants, type BadgeProps } from './badge'
+export { Badge, badgeVariants, type BadgeProps } from './badge.tsx'
 
 // Dialog
 export {
@@ -29,7 +29,7 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
-} from './dialog'
+} from './dialog.tsx'
 
 // Select
 export {
@@ -43,7 +43,7 @@ export {
   SelectSeparator,
   SelectScrollUpButton,
   SelectScrollDownButton,
-} from './select'
+} from './select.tsx'
 
 // Popover
 export {
@@ -51,7 +51,7 @@ export {
   PopoverTrigger,
   PopoverContent,
   PopoverAnchor,
-} from './popover'
+} from './popover.tsx'
 
 // Dropdown Menu
 export {
@@ -70,7 +70,7 @@ export {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup,
-} from './dropdown-menu'
+} from './dropdown-menu.tsx'
 
 // Separator
-export { Separator } from './separator'
+export { Separator } from './separator.tsx'
