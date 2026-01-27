@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui'
 import { HeroBackground } from '@/components/HeroBackground'
 import { StickyNav } from '@/components/StickyNav'
+import { FeatureShowcase } from '@/components/FeatureShowcase'
 
 export default function LandingPage() {
   return (
@@ -150,51 +151,8 @@ export default function LandingPage() {
 
       {/* Features Section */}
       <section id="features" className="px-3 pb-3">
-        <div className="bg-white rounded-3xl border border-sand-200">
-          <div className="max-w-5xl mx-auto px-6 py-20">
-            <div className="text-center mb-12">
-              <p className="text-sm font-medium text-sand-500 mb-2">Features</p>
-              <h2 className="text-3xl font-semibold text-sand-900">Everything you need to ship better</h2>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-2xl bg-sand-100 flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-6 h-6 text-sand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                  </svg>
-                </div>
-                <h3 className="font-semibold text-sand-900 mb-2">Feedback board</h3>
-                <p className="text-sm text-sand-600 leading-relaxed">
-                  Let users submit feature requests and vote on what matters most to them.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-2xl bg-sand-100 flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-6 h-6 text-sand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
-                  </svg>
-                </div>
-                <h3 className="font-semibold text-sand-900 mb-2">Public roadmap</h3>
-                <p className="text-sm text-sand-600 leading-relaxed">
-                  Show users what you&apos;re working on. Keep them in the loop with a Kanban-style board.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-2xl bg-lime-100 flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-6 h-6 text-lime-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <h3 className="font-semibold text-sand-900 mb-2">Changelog</h3>
-                <p className="text-sm text-sand-600 leading-relaxed">
-                  Mark features as shipped and automatically notify everyone who voted.
-                </p>
-              </div>
-            </div>
-          </div>
+        <div className="bg-white rounded-3xl border border-sand-200 py-20">
+          <FeatureShowcase />
         </div>
       </section>
 
