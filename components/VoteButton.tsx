@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui'
 import { Input } from '@/components/ui'
 import {
@@ -25,23 +24,28 @@ export function VoteButton({ itemId, initialVoteCount, initialHasVoted, voterTok
   const [showNotifyForm, setShowNotifyForm] = useState(false)
   const [email, setEmail] = useState('')
   const [notifyOnShip, setNotifyOnShip] = useState(false)
+  const [error, setError] = useState('')
 
   const handleVote = async () => {
     if (loading) return
+    setError('')
 
     if (hasVoted) {
-      // Remove vote directly
+      // Remove vote via API
       setLoading(true)
-      const supabase = createClient()
-      const { error } = await supabase
-        .from('votes')
-        .delete()
-        .eq('item_id', itemId)
-        .eq('voter_token', voterToken)
+      try {
+        const response = await fetch('/api/votes', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ itemId, voterToken }),
+        })
 
-      if (!error) {
-        setVoteCount(voteCount - 1)
-        setHasVoted(false)
+        if (response.ok) {
+          setVoteCount(voteCount - 1)
+          setHasVoted(false)
+        }
+      } catch {
+        setError('Failed to remove vote')
       }
       setLoading(false)
     } else {
@@ -52,31 +56,35 @@ export function VoteButton({ itemId, initialVoteCount, initialHasVoted, voterTok
 
   const submitVote = async () => {
     setLoading(true)
-    const supabase = createClient()
+    setError('')
 
-    const voteData: {
-      item_id: string
-      voter_token: string
-      voter_email?: string
-      notify_on_ship: boolean
-    } = {
-      item_id: itemId,
-      voter_token: voterToken,
-      notify_on_ship: notifyOnShip,
-    }
+    try {
+      const response = await fetch('/api/votes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          itemId,
+          voterToken,
+          voterEmail: notifyOnShip && email ? email : null,
+          notifyOnShip,
+        }),
+      })
 
-    if (notifyOnShip && email) {
-      voteData.voter_email = email
-    }
+      const data = await response.json()
 
-    const { error } = await supabase.from('votes').insert(voteData)
-
-    if (!error) {
-      setVoteCount(voteCount + 1)
-      setHasVoted(true)
-      setShowNotifyForm(false)
-      setEmail('')
-      setNotifyOnShip(false)
+      if (response.ok) {
+        setVoteCount(voteCount + 1)
+        setHasVoted(true)
+        setShowNotifyForm(false)
+        setEmail('')
+        setNotifyOnShip(false)
+      } else if (response.status === 429) {
+        setError('Too many votes. Please try again later.')
+      } else {
+        setError(data.error || 'Failed to vote')
+      }
+    } catch {
+      setError('Failed to vote')
     }
 
     setLoading(false)
@@ -125,6 +133,10 @@ export function VoteButton({ itemId, initialVoteCount, initialHasVoted, voterTok
             placeholder="your@email.com"
             className="mb-3 h-9"
           />
+        )}
+
+        {error && (
+          <p className="text-xs text-red-600 mb-2">{error}</p>
         )}
 
         <div className="flex gap-2">

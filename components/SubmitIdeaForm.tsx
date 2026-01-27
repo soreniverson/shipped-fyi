@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import { Button, FormInput as Input, FormTextarea as Textarea } from '@/components/ui'
 
 interface SubmitIdeaFormProps {
@@ -21,25 +20,38 @@ export function SubmitIdeaForm({ projectId, onSubmit }: SubmitIdeaFormProps) {
     setLoading(true)
     setError('')
 
-    const supabase = createClient()
-    const { error: insertError } = await supabase.from('items').insert({
-      project_id: projectId,
-      title,
-      description: description || null,
-      status: 'considering',
-    })
+    try {
+      const response = await fetch('/api/ideas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          projectId,
+          title,
+          description: description || null,
+        }),
+      })
 
-    if (insertError) {
+      const data = await response.json()
+
+      if (!response.ok) {
+        if (response.status === 429) {
+          setError('Too many submissions. Please try again later.')
+        } else {
+          setError(data.error || 'Failed to submit your idea. Please try again.')
+        }
+        setLoading(false)
+        return
+      }
+
+      setTitle('')
+      setDescription('')
+      setIsOpen(false)
+      setLoading(false)
+      onSubmit()
+    } catch {
       setError('Failed to submit your idea. Please try again.')
       setLoading(false)
-      return
     }
-
-    setTitle('')
-    setDescription('')
-    setIsOpen(false)
-    setLoading(false)
-    onSubmit()
   }
 
   if (!isOpen) {

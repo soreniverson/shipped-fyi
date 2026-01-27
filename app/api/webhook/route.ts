@@ -41,14 +41,34 @@ export async function POST(request: Request) {
 
     switch (event.type) {
       case 'checkout.session.completed': {
-        const session = event.data.object
-        const subscriptionId = (session as unknown as { subscription: string }).subscription
-        const customerId = (session as unknown as { customer: string }).customer
+        const session = event.data.object as Stripe.Checkout.Session
+        const subscriptionId = session.subscription
+        const customerId = session.customer
 
-        // Get the subscription details
-        const subscriptionData = await stripe.subscriptions.retrieve(subscriptionId)
-        const userId = (subscriptionData as unknown as { metadata: { supabase_user_id: string } }).metadata.supabase_user_id
-        const periodEnd = (subscriptionData as unknown as { current_period_end: number }).current_period_end
+        if (!subscriptionId || typeof subscriptionId !== 'string') {
+          console.error('No subscription ID in checkout session')
+          break
+        }
+
+        if (!customerId || typeof customerId !== 'string') {
+          console.error('No customer ID in checkout session')
+          break
+        }
+
+        // Get the subscription details with expanded items
+        const subscriptionData = await stripe.subscriptions.retrieve(subscriptionId, {
+          expand: ['items.data'],
+        }) as Stripe.Subscription
+        const userId = subscriptionData.metadata.supabase_user_id
+
+        if (!userId) {
+          console.error('No supabase_user_id in subscription metadata')
+          break
+        }
+
+        // Get period end from the first subscription item
+        const firstItem = subscriptionData.items.data[0]
+        const periodEnd = firstItem?.current_period_end
 
         await supabaseAdmin.from('subscriptions').upsert({
           user_id: userId,
@@ -56,33 +76,40 @@ export async function POST(request: Request) {
           stripe_subscription_id: subscriptionId,
           plan: 'pro',
           status: 'active',
-          current_period_end: new Date(periodEnd * 1000).toISOString(),
+          current_period_end: periodEnd ? new Date(periodEnd * 1000).toISOString() : null,
           updated_at: new Date().toISOString(),
         })
         break
       }
 
       case 'customer.subscription.updated': {
-        const subscription = event.data.object
-        const subData = subscription as unknown as {
-          id: string
-          metadata: { supabase_user_id: string }
-          status: string
-          current_period_end: number
+        const subscription = event.data.object as Stripe.Subscription
+
+        const statusMap: Record<string, string> = {
+          active: 'active',
+          past_due: 'past_due',
+          canceled: 'canceled',
+          unpaid: 'past_due',
+          incomplete: 'past_due',
+          incomplete_expired: 'canceled',
+          trialing: 'active',
+          paused: 'past_due',
         }
 
+        // Get period end from the first subscription item
+        const firstItem = subscription.items?.data?.[0]
+        const periodEnd = firstItem?.current_period_end
+
         await supabaseAdmin.from('subscriptions').update({
-          status: subData.status === 'active' ? 'active' :
-                  subData.status === 'past_due' ? 'past_due' :
-                  subData.status === 'canceled' ? 'canceled' : 'active',
-          current_period_end: new Date(subData.current_period_end * 1000).toISOString(),
+          status: statusMap[subscription.status] || 'active',
+          current_period_end: periodEnd ? new Date(periodEnd * 1000).toISOString() : null,
           updated_at: new Date().toISOString(),
-        }).eq('stripe_subscription_id', subData.id)
+        }).eq('stripe_subscription_id', subscription.id)
         break
       }
 
       case 'customer.subscription.deleted': {
-        const subscription = event.data.object as unknown as { id: string }
+        const subscription = event.data.object as Stripe.Subscription
 
         await supabaseAdmin.from('subscriptions').update({
           plan: 'free',
@@ -95,8 +122,14 @@ export async function POST(request: Request) {
       }
 
       case 'invoice.payment_failed': {
-        const invoice = event.data.object as unknown as { subscription: string | null }
-        const subscriptionId = invoice.subscription
+        const invoice = event.data.object as Stripe.Invoice
+        // In Stripe v20+, subscription is accessed via parent.subscription_details
+        const subscriptionRef = invoice.parent?.subscription_details?.subscription
+
+        // Extract subscription ID (can be string or expanded object)
+        const subscriptionId = typeof subscriptionRef === 'string'
+          ? subscriptionRef
+          : subscriptionRef?.id
 
         if (subscriptionId) {
           await supabaseAdmin.from('subscriptions').update({

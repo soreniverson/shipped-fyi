@@ -2,6 +2,28 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { Resend } from 'resend'
 
+async function getOrCreateUnsubscribeToken(supabase: Awaited<ReturnType<typeof createClient>>, email: string): Promise<string> {
+  // Check for existing token
+  const { data: existing } = await supabase
+    .from('unsubscribe_tokens')
+    .select('token')
+    .eq('email', email)
+    .single()
+
+  if (existing) {
+    return existing.token
+  }
+
+  // Create new token
+  const { data: newToken } = await supabase
+    .from('unsubscribe_tokens')
+    .insert({ email })
+    .select('token')
+    .single()
+
+  return newToken?.token || ''
+}
+
 export async function POST(request: NextRequest) {
   const resend = new Resend(process.env.RESEND_API_KEY)
   try {
@@ -59,11 +81,16 @@ export async function POST(request: NextRequest) {
     }
 
     const project = item.projects as { name: string; slug: string }
-    const changelogUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://shipped.fyi'}/${project.slug}/changelog`
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://shipped.fyi'
+    const changelogUrl = `${baseUrl}/${project.slug}/changelog`
 
     // Send emails
     const emailPromises = emailsToNotify.map(async (email) => {
       try {
+        // Get or create unsubscribe token for this email
+        const unsubscribeToken = await getOrCreateUnsubscribeToken(supabase, email)
+        const unsubscribeUrl = `${baseUrl}/unsubscribe?token=${unsubscribeToken}`
+
         await resend.emails.send({
           from: 'shipped.fyi <notifications@shipped.fyi>',
           to: email,
@@ -81,8 +108,11 @@ export async function POST(request: NextRequest) {
               <p style="color: #4a4a4a;">
                 <a href="${changelogUrl}" style="color: #0066cc;">View the full changelog</a>
               </p>
-              <p style="color: #888; font-size: 14px; margin-top: 32px;">
-                You're receiving this because you opted in to notifications when you voted.
+              <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 32px 0;" />
+              <p style="color: #888; font-size: 12px;">
+                You're receiving this because you opted in to notifications when you voted on ${project.name}.
+                <br /><br />
+                <a href="${unsubscribeUrl}" style="color: #888;">Unsubscribe from all notifications</a>
               </p>
             </div>
           `,

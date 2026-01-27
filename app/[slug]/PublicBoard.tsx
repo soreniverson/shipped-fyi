@@ -8,7 +8,8 @@ import { VoteButton } from '@/components/VoteButton'
 import { SubmitIdeaForm } from '@/components/SubmitIdeaForm'
 import { CategoryBadge } from '@/components/CategoryBadge'
 import { CategoryFilter } from '@/components/CategoryFilter'
-import { Card, CardContent } from '@/components/ui'
+import { Card, CardContent, Badge } from '@/components/ui'
+import { ItemStatus } from '@/lib/supabase/types'
 
 type ItemWithCategory = Item & { category?: Category | null }
 
@@ -22,12 +23,6 @@ const statusLabels: Record<string, string> = {
   considering: 'Considering',
   planned: 'Planned',
   in_progress: 'In Progress',
-}
-
-const statusColors: Record<string, string> = {
-  considering: 'bg-amber-100 text-amber-700',
-  planned: 'bg-violet-100 text-violet-700',
-  in_progress: 'bg-blue-100 text-blue-700',
 }
 
 export function PublicBoard({ project, initialItems, categories }: PublicBoardProps) {
@@ -106,9 +101,9 @@ export function PublicBoard({ project, initialItems, categories }: PublicBoardPr
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-medium text-sand-900">{item.title}</h3>
-                    <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[item.status]}`}>
+                    <Badge variant={item.status as ItemStatus} size="sm">
                       {statusLabels[item.status]}
-                    </span>
+                    </Badge>
                     {item.category && <CategoryBadge category={item.category} />}
                   </div>
                   {item.description && (
