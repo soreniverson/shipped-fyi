@@ -5,37 +5,37 @@ import { HeroBackground } from '@/components/HeroBackground'
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-sand-100">
+      {/* Floating Nav - Fixed to viewport */}
+      <nav className="fixed top-3 left-0 right-0 z-50 mx-auto max-w-3xl px-4">
+        <div className="bg-white/90 backdrop-blur-md rounded-full border border-sand-200 shadow-sm px-4 py-2.5 flex items-center justify-between">
+          <Link href="/" className="text-lg font-semibold text-sand-900">
+            shipped.fyi
+          </Link>
+          <div className="hidden sm:flex items-center gap-6">
+            <Link href="/#features" className="text-sm text-sand-600 hover:text-sand-900">
+              Features
+            </Link>
+            <Link href="/pricing" className="text-sm text-sand-600 hover:text-sand-900">
+              Pricing
+            </Link>
+            <Link href="/blog" className="text-sm text-sand-600 hover:text-sand-900">
+              Blog
+            </Link>
+          </div>
+          <Link href="/login">
+            <Button size="sm" className="rounded-full px-4">Get started</Button>
+          </Link>
+        </div>
+      </nav>
+
       {/* Hero Section with inset container */}
       <div className="px-3 pt-3">
-        <div className="relative rounded-3xl overflow-hidden min-h-[85vh]">
+        <div className="relative rounded-3xl overflow-hidden min-h-[85vh] flex items-center">
           {/* Background image with scroll zoom */}
           <HeroBackground />
 
-          {/* Floating Nav - Sticky */}
-          <nav className="sticky top-3 z-50 mx-auto max-w-3xl px-4 pt-4">
-            <div className="bg-white/90 backdrop-blur-md rounded-full border border-sand-200 shadow-sm px-4 py-2.5 flex items-center justify-between">
-              <Link href="/" className="text-lg font-semibold text-sand-900">
-                shipped.fyi
-              </Link>
-              <div className="hidden sm:flex items-center gap-6">
-                <Link href="/#features" className="text-sm text-sand-600 hover:text-sand-900">
-                  Features
-                </Link>
-                <Link href="/pricing" className="text-sm text-sand-600 hover:text-sand-900">
-                  Pricing
-                </Link>
-                <Link href="/blog" className="text-sm text-sand-600 hover:text-sand-900">
-                  Blog
-                </Link>
-              </div>
-              <Link href="/login">
-                <Button size="sm" className="rounded-full px-4">Get started</Button>
-              </Link>
-            </div>
-          </nav>
-
           {/* Hero Content - Text Left, Image Right */}
-          <div className="relative max-w-6xl mx-auto px-6 pt-16 pb-24 lg:pt-24">
+          <div className="relative max-w-6xl mx-auto px-6 py-24">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left side - Text */}
               <div>
