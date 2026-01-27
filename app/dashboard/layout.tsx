@@ -26,6 +26,15 @@ export default async function DashboardLayout({
             <Link href="/dashboard" className="text-sm text-sand-500 hover:text-sand-700">
               Projects
             </Link>
+            <Link href="/dashboard/inbox" className="text-sm text-sand-500 hover:text-sand-700">
+              Inbox
+            </Link>
+            <Link href="/dashboard/clusters" className="text-sm text-sand-500 hover:text-sand-700">
+              Clusters
+            </Link>
+            <Link href="/dashboard/integrations" className="text-sm text-sand-500 hover:text-sand-700">
+              Integrations
+            </Link>
           </div>
           <div className="flex items-center gap-4">
             <span className="text-sm text-sand-400">{user.email}</span>
