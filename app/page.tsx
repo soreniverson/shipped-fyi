@@ -26,22 +26,16 @@ export default function LandingPage() {
                   <br />
                   product feedback
                 </h1>
-                <div className="mt-8 flex flex-wrap items-center gap-4">
+                <div className="mt-8">
                   <Link href="/login">
-                    <Button size="lg" className="rounded-full px-8">Start for free</Button>
-                  </Link>
-                  <Link href="/#how-it-works" className="text-sm font-medium text-sand-600 hover:text-sand-900 flex items-center gap-1">
-                    See how it works
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <Button size="lg" className="rounded-full px-10 py-6 text-base">Start for free</Button>
                   </Link>
                 </div>
               </div>
 
               {/* Right side - Product Image */}
-              <div className="relative lg:pl-8">
-                <div className="relative">
+              <div className="relative lg:pl-4">
+                <div className="relative scale-110 origin-center">
                   {/* Browser window mockup */}
                   <div className="bg-white rounded-2xl border border-sand-200 shadow-2xl shadow-sand-900/10 overflow-hidden">
                     {/* Browser bar */}

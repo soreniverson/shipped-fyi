@@ -1,26 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  /* Sand color palette */
-  --sand-25: #fefdfb;
-  --sand-50: #fdfcf9;
-  --sand-100: #f9f7f3;
-  --sand-200: #f2efe8;
-  --sand-300: #e5e1d7;
-  --sand-400: #c9c4b7;
-  --sand-500: #a8a292;
-  --sand-600: #7d7869;
-  --sand-700: #5c584b;
-  --sand-800: #3a3832;
-  --sand-900: #262520;
-  --sand-950: #171612;
+  /* Slate color palette - blue-gray hues for modern SaaS */
+  --sand-25: #fafbfc;
+  --sand-50: #f8fafc;
+  --sand-100: #f1f5f9;
+  --sand-200: #e2e8f0;
+  --sand-300: #cbd5e1;
+  --sand-400: #94a3b8;
+  --sand-500: #64748b;
+  --sand-600: #475569;
+  --sand-700: #334155;
+  --sand-800: #1e293b;
+  --sand-900: #0f172a;
+  --sand-950: #020617;
 
   /* Semantic colors */
   --background: var(--sand-50);
   --foreground: var(--sand-900);
   --surface: #ffffff;
-  --primary: #2563eb;
-  --primary-light: #3b82f6;
+  --primary: #0f172a;
+  --primary-light: #1e293b;
 
   /* Status colors */
   --status-considering: #f59e0b;
@@ -28,23 +28,23 @@
   --status-in-progress: #3b82f6;
   --status-shipped: #10b981;
 
-  /* shadcn/ui CSS variables mapped to sand palette */
+  /* shadcn/ui CSS variables mapped to slate palette */
   --card: 0 0% 100%;
-  --card-foreground: 30 6% 14%;
+  --card-foreground: 222 47% 11%;
   --popover: 0 0% 100%;
-  --popover-foreground: 30 6% 14%;
+  --popover-foreground: 222 47% 11%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 37 19% 96%;
-  --secondary-foreground: 30 6% 14%;
-  --muted: 37 19% 96%;
-  --muted-foreground: 32 9% 45%;
-  --accent: 37 19% 96%;
-  --accent-foreground: 30 6% 14%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222 47% 11%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 210 40% 96%;
+  --accent-foreground: 222 47% 11%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --border: 35 16% 93%;
-  --input: 35 16% 93%;
-  --ring: 30 6% 14%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 222 47% 11%;
   --radius: 0.5rem;
 }
 
@@ -55,7 +55,7 @@
   --color-primary: var(--primary);
   --color-primary-light: var(--primary-light);
 
-  /* Sand colors */
+  /* Slate colors (using sand- prefix for compatibility) */
   --color-sand-25: var(--sand-25);
   --color-sand-50: var(--sand-50);
   --color-sand-100: var(--sand-100);
