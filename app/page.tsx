@@ -1,21 +1,17 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui'
+import { HeroBackground } from '@/components/HeroBackground'
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-sand-100">
-      {/* Announcement Banner */}
-      <div className="bg-primary text-white text-center py-2 px-4 text-sm">
-        Now with email notifications when features ship.{' '}
-        <Link href="/blog" className="underline hover:no-underline">
-          Learn more →
-        </Link>
-      </div>
-
       {/* Hero Section with inset container */}
       <div className="px-3 pt-3">
-        <div className="relative bg-gradient-to-br from-sand-50 via-sand-50 to-sand-100 rounded-3xl overflow-hidden min-h-[85vh]">
-          {/* Floating Nav */}
+        <div className="relative rounded-3xl overflow-hidden min-h-[85vh]">
+          {/* Background image with scroll zoom */}
+          <HeroBackground />
+
+          {/* Floating Nav - Sticky */}
           <nav className="sticky top-3 z-50 mx-auto max-w-3xl px-4 pt-4">
             <div className="bg-white/90 backdrop-blur-md rounded-full border border-sand-200 shadow-sm px-4 py-2.5 flex items-center justify-between">
               <Link href="/" className="text-lg font-semibold text-sand-900">
@@ -32,30 +28,21 @@ export default function LandingPage() {
                   Blog
                 </Link>
               </div>
-              <div className="flex items-center gap-2">
-                <Link href="/login" className="text-sm text-sand-600 hover:text-sand-900 hidden sm:block">
-                  Sign in
-                </Link>
-                <Link href="/login">
-                  <Button size="sm" className="rounded-full px-4">Get started</Button>
-                </Link>
-              </div>
+              <Link href="/login">
+                <Button size="sm" className="rounded-full px-4">Get started</Button>
+              </Link>
             </div>
           </nav>
 
           {/* Hero Content - Text Left, Image Right */}
-          <div className="max-w-6xl mx-auto px-6 pt-16 pb-24 lg:pt-24">
+          <div className="relative max-w-6xl mx-auto px-6 pt-16 pb-24 lg:pt-24">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left side - Text */}
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-lime-100 text-lime-800 text-sm font-medium mb-6">
-                  <span className="w-1.5 h-1.5 rounded-full bg-lime-500 animate-pulse"></span>
-                  Built for indie hackers
-                </div>
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-sand-900 tracking-tight leading-[1.1]">
                   The simplest way
                   <br />
-                  <span className="text-primary">to collect feedback</span>
+                  to collect feedback
                 </h1>
                 <p className="mt-6 text-lg text-sand-600 max-w-md leading-relaxed">
                   A beautiful feedback board, public roadmap, and changelog. Let your users tell you what to build next.
@@ -187,7 +174,7 @@ export default function LandingPage() {
         <div className="bg-white rounded-3xl border border-sand-200">
           <div className="max-w-5xl mx-auto px-6 py-20">
             <div className="text-center mb-12">
-              <p className="text-sm font-medium text-primary mb-2">Features</p>
+              <p className="text-sm font-medium text-sand-500 mb-2">Features</p>
               <h2 className="text-3xl font-semibold text-sand-900">Everything you need to ship better</h2>
             </div>
 
@@ -235,7 +222,7 @@ export default function LandingPage() {
       {/* How it works */}
       <section id="how-it-works" className="max-w-5xl mx-auto px-6 py-20">
         <div className="text-center mb-12">
-          <p className="text-sm font-medium text-primary mb-2">How it works</p>
+          <p className="text-sm font-medium text-sand-500 mb-2">How it works</p>
           <h2 className="text-3xl font-semibold text-sand-900">Four steps to better products</h2>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -260,12 +247,12 @@ export default function LandingPage() {
 
       {/* CTA */}
       <section className="px-3 pb-3">
-        <div className="bg-primary rounded-3xl">
+        <div className="bg-sand-900 rounded-3xl">
           <div className="max-w-3xl mx-auto px-6 py-16 text-center">
             <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-4">
               Ready to ship better products?
             </h2>
-            <p className="text-primary-foreground/80 mb-8 max-w-md mx-auto">
+            <p className="text-sand-400 mb-8 max-w-md mx-auto">
               Start collecting feedback today. Free to get started, no credit card required.
             </p>
             <Link href="/login">

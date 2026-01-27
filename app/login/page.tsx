@@ -43,10 +43,10 @@ function LoginForm() {
     <div className="bg-white rounded-xl shadow-sm border border-sand-200 p-8">
       <div className="text-center mb-8">
         <h1 className="text-2xl font-semibold text-sand-900">
-          Sign in
+          Get started
         </h1>
         <p className="text-sand-600 mt-2">
-          {upgrade === 'pro' ? 'Sign in to upgrade to Pro' : 'Sign in to manage your feedback boards'}
+          {upgrade === 'pro' ? 'Enter your email to upgrade to Pro' : 'Enter your email to create or access your account'}
         </p>
       </div>
 
@@ -88,7 +88,10 @@ function LoginForm() {
       )}
 
       <p className="mt-6 text-center text-sm text-sand-500">
-        We&apos;ll send you a magic link to sign in. No password needed.
+        We&apos;ll send you a magic link. No password needed.
+      </p>
+      <p className="mt-2 text-center text-sm text-sand-500">
+        Already have an account? Enter your email above to sign in.
       </p>
     </div>
   )
