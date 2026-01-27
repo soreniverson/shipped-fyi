@@ -1,32 +1,13 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui'
 import { HeroBackground } from '@/components/HeroBackground'
+import { StickyNav } from '@/components/StickyNav'
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-sand-100">
-      {/* Floating Nav - Fixed to viewport */}
-      <nav className="fixed top-3 left-0 right-0 z-50 mx-auto max-w-3xl px-4">
-        <div className="bg-white/90 backdrop-blur-md rounded-full border border-sand-200 shadow-sm px-4 py-2.5 flex items-center justify-between">
-          <Link href="/" className="text-lg font-semibold text-sand-900">
-            shipped.fyi
-          </Link>
-          <div className="hidden sm:flex items-center gap-6">
-            <Link href="/#features" className="text-sm text-sand-600 hover:text-sand-900">
-              Features
-            </Link>
-            <Link href="/pricing" className="text-sm text-sand-600 hover:text-sand-900">
-              Pricing
-            </Link>
-            <Link href="/blog" className="text-sm text-sand-600 hover:text-sand-900">
-              Blog
-            </Link>
-          </div>
-          <Link href="/login">
-            <Button size="sm" className="rounded-full px-4">Get started</Button>
-          </Link>
-        </div>
-      </nav>
+      {/* Floating Nav - Starts with padding, locks on scroll */}
+      <StickyNav />
 
       {/* Hero Section with inset container */}
       <div className="px-3 pt-3">
@@ -40,13 +21,10 @@ export default function LandingPage() {
               {/* Left side - Text */}
               <div>
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-sand-900 tracking-tight leading-[1.1]">
-                  The simplest way
+                  Easily collect
                   <br />
-                  to collect feedback
+                  product feedback
                 </h1>
-                <p className="mt-6 text-lg text-sand-600 max-w-md leading-relaxed">
-                  A beautiful feedback board, public roadmap, and changelog. Let your users tell you what to build next.
-                </p>
                 <div className="mt-8 flex flex-wrap items-center gap-4">
                   <Link href="/login">
                     <Button size="lg" className="rounded-full px-8">Start for free</Button>
@@ -140,29 +118,30 @@ export default function LandingPage() {
       <section className="max-w-5xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
           <div>
-            <div className="w-10 h-10 rounded-full bg-sand-200 flex items-center justify-center mx-auto mb-3">
-              <svg className="w-5 h-5 text-sand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
+            {/* Apple HIG Orange #FF9500 */}
+            <svg className="w-10 h-10 mx-auto mb-3" viewBox="0 0 24 24" fill="none">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="#FF9500" />
+            </svg>
             <p className="text-2xl font-semibold text-sand-900">5 min setup</p>
             <p className="text-sm text-sand-500 mt-1">Create your board instantly</p>
           </div>
           <div>
-            <div className="w-10 h-10 rounded-full bg-sand-200 flex items-center justify-center mx-auto mb-3">
-              <svg className="w-5 h-5 text-sand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
-            </div>
+            {/* Apple HIG Blue #007AFF */}
+            <svg className="w-10 h-10 mx-auto mb-3" viewBox="0 0 24 24" fill="none">
+              <circle cx="9" cy="7" r="4" fill="#007AFF" />
+              <path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" fill="#007AFF" />
+              <circle cx="17" cy="7" r="3" fill="#007AFF" opacity="0.5" />
+              <path d="M17 14a3 3 0 013 3v2h-4" fill="#007AFF" opacity="0.5" />
+            </svg>
             <p className="text-2xl font-semibold text-sand-900">No signup required</p>
             <p className="text-sm text-sand-500 mt-1">Users vote without accounts</p>
           </div>
           <div>
-            <div className="w-10 h-10 rounded-full bg-lime-100 flex items-center justify-center mx-auto mb-3">
-              <svg className="w-5 h-5 text-lime-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
+            {/* Apple HIG Green #34C759 */}
+            <svg className="w-10 h-10 mx-auto mb-3" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" fill="#34C759" />
+              <path d="M8 12l3 3 5-6" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
             <p className="text-2xl font-semibold text-sand-900">Free tier</p>
             <p className="text-sm text-sand-500 mt-1">Start without a credit card</p>
           </div>
